@@ -51,7 +51,7 @@ SCT_WD_3/
 ![Dashboard](assets/Screenshot3.png)
 
 ## Quiz Screen
-![Quiz Screen](assets/screenshot4.png)
+![Quiz Screen](assets/Screenshot4.png)
 
 ## Result Screen
 ![Result Screen](assets/Screenshot5.png)
