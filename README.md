@@ -42,22 +42,22 @@ SCT_WD_3/
 # Screenshots
 
 ## Home Page
-![Home Page](assets/screenshot1.png)
+![Home Page](assets/Screenshot1.png)
 
 ## Topic Selection
-![Topic Selection](assets/screenshot2.png)
+![Topic Selection](assets/Screenshot2.png)
 
 ## Dashboard
-![Dashboard](assets/screenshot3.png)
+![Dashboard](assets/Screenshot3.png)
 
 ## Quiz Screen
 ![Quiz Screen](assets/screenshot4.png)
 
 ## Result Screen
-![Result Screen](assets/screenshot5.png)
+![Result Screen](assets/Screenshot5.png)
 
 ## Dark Mode
-![Dark Mode](assets/screenshot6.png)
+![Dark Mode](assets/Screenshot6.png)
 
 # Author
 Varinda Aggarwal
