@@ -50,13 +50,13 @@ SCT_WD_3/
 ## Dashboard
 ![Dashboard](assets/Screenshot3.png)
 
-## Quiz Screen
+## Sub Topic Selection
 ![Quiz Screen](assets/Screenshot4.png)
 
-## Result Screen
+## Quiz Screen
 ![Result Screen](assets/Screenshot5.png)
 
-## Dark Mode
+## Result Screen
 ![Dark Mode](assets/Screenshot6.png)
 
 # Author
