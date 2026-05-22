@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — CodeQuiz</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="blob-wrap">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <!-- ── NAVBAR ── -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon">⚡</div>
+      <span class="nav-logo-text">Code<span>Quiz</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="dashboard.html" class="active">Dashboard</a></li>
+      <li><a href="topic-select.html">Practice</a></li>
+      <li><a href="index.html#topics">Topics</a></li>
+      <li><a href="index.html#features">Features</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="nav-theme-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+      <div class="nav-avatar" title="Profile">Y</div>
+      <a href="quiz.html" class="nav-cta">Start Quiz →</a>
+    </div>
+  </nav>
+
+  <!-- ── PAGE ── -->
+  <div class="page-wrap">
+    <div class="dashboard-wrap">
+
+      <!-- Greeting -->
+      <div class="dash-greeting anim-fade-up">
+        <div class="dash-greeting-top">
+          <div>
+            <div class="dash-hello" id="dashHello">Hello, <span>You!</span> 👋</div>
+            <div class="dash-sub" id="dashSub">Welcome! Start a quiz to begin your streak.</div>
+          </div>
+          <div class="dash-actions">
+            <a href="quiz.html" class="btn btn-primary">New Quiz →</a>
+            <button class="btn btn-outline" onclick="clearAllData()">🗑️ Reset Data</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats row -->
+      <div class="dash-stats">
+        <div class="stat-tile card anim-fade-up delay-1">
+          <div class="stat-tile-icon st-purple">🎯</div>
+          <div>
+            <div class="stat-tile-val" id="statSolved">0</div>
+            <div class="stat-tile-label">Questions Solved</div>
+          </div>
+        </div>
+        <div class="stat-tile card anim-fade-up delay-2">
+          <div class="stat-tile-icon st-teal">✅</div>
+          <div>
+            <div class="stat-tile-val" id="statAccuracy">0%</div>
+            <div class="stat-tile-label">Accuracy</div>
+          </div>
+        </div>
+        <div class="stat-tile card anim-fade-up delay-3">
+          <div class="stat-tile-icon st-pink">🔥</div>
+          <div>
+            <div class="stat-tile-val" id="statStreak">0</div>
+            <div class="stat-tile-label">Day Streak</div>
+          </div>
+        </div>
+        <div class="stat-tile card anim-fade-up delay-4">
+          <div class="stat-tile-icon st-amber">🏆</div>
+          <div>
+            <div class="stat-tile-val" id="statBadges">0</div>
+            <div class="stat-tile-label">Badges Earned</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NEW LAYOUT: Quick Start (left) + Recent Activity (right) -->
+      <div class="dash-main-grid anim-fade-up delay-2">
+
+        <!-- Quick Start -->
+        <div class="quick-start-card card">
+          <div class="qs-title">🚀 Quick Start</div>
+
+          <div class="section-label">Language</div>
+          <div class="lang-tabs">
+            <button class="lang-tab active" onclick="selectTab(this,'.lang-tab')">Python</button>
+            <button class="lang-tab" onclick="selectTab(this,'.lang-tab')">C++</button>
+            <button class="lang-tab" onclick="selectTab(this,'.lang-tab')">Java</button>
+            <button class="lang-tab" onclick="selectTab(this,'.lang-tab')">JavaScript</button>
+            <button class="lang-tab" onclick="selectTab(this,'.lang-tab')">C</button>
+          </div>
+
+          <div class="section-label">Topic</div>
+          <div class="topic-pills-row">
+            <button class="topic-pill active" onclick="selectTab(this,'.topic-pill')">DSA</button>
+            <button class="topic-pill" onclick="selectTab(this,'.topic-pill')">OOPs</button>
+            <button class="topic-pill" onclick="selectTab(this,'.topic-pill')">DBMS</button>
+            <button class="topic-pill" onclick="selectTab(this,'.topic-pill')">OS</button>
+            <button class="topic-pill" onclick="selectTab(this,'.topic-pill')">CN</button>
+            <button class="topic-pill" onclick="selectTab(this,'.topic-pill')">Web Dev</button>
+            <button class="topic-pill" onclick="selectTab(this,'.topic-pill')">SQL</button>
+          </div>
+
+          <div class="section-label">Mode</div>
+          <div class="mode-row">
+            <div class="mode-tile active" onclick="selectMode(this)">
+              <div class="mode-tile-icon">📖</div>
+              <div class="mode-tile-title">Practice</div>
+              <div class="mode-tile-desc">No timer, learn at your pace</div>
+            </div>
+            <div class="mode-tile" onclick="selectMode(this)">
+              <div class="mode-tile-icon">⏱️</div>
+              <div class="mode-tile-title">Test Mode</div>
+              <div class="mode-tile-desc">Timed — 30s per question</div>
+            </div>
+          </div>
+
+          <div class="section-label">Difficulty</div>
+          <div class="diff-row">
+            <button class="diff-btn easy active" onclick="selectDiff(this,'easy')">🟢 Easy</button>
+            <button class="diff-btn medium" onclick="selectDiff(this,'medium')">🟡 Medium</button>
+            <button class="diff-btn hard" onclick="selectDiff(this,'hard')">🔴 Hard</button>
+          </div>
+
+          <button class="btn btn-primary" style="width:100%" onclick="startQuiz()">Start Quiz →</button>
+        </div>
+
+        <!-- Recent Activity (moved to right side) -->
+        <div class="activity-card card">
+          <div class="act-title">📅 Recent Activity</div>
+          <div class="act-list" id="activityList">
+            <!-- filled by app.js -->
+          </div>
+        </div>
+
+      </div><!-- /dash-main-grid -->
+
+      <!-- Bottom: Topic Progress + Daily Goals -->
+      <div class="dash-bottom-grid">
+
+        <!-- Topic Progress -->
+        <div class="progress-card card anim-fade-up delay-3">
+          <div class="act-title">📈 Topic Progress</div>
+          <div class="prog-list" id="progressList">
+            <!-- filled by app.js -->
+          </div>
+        </div>
+
+        <!-- Daily Goals -->
+        <div class="goals-card card anim-fade-up delay-4">
+          <div class="act-title">🎯 Daily Goals</div>
+          <div class="goals-list" id="goalsList">
+            <!-- filled by app.js -->
+          </div>
+          <div class="goals-footer">
+            <div class="goals-progress-label">
+              <span>Daily progress</span>
+              <span id="goalsPct">0%</span>
+            </div>
+            <div class="prog-bar">
+              <div class="prog-fill" id="goalsBar" style="width:0%"></div>
+            </div>
+            <div class="goals-reset-wrap">
+              <span id="goalsResetNote" style="font-size:11px; color:var(--text-muted);">Goals reset daily at midnight.</span>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /dash-bottom-grid -->
+
+    </div><!-- /dashboard-wrap -->
+
+    <footer class="footer">
+      <div class="footer-logo">⚡ CodeQuiz</div>
+      <div>Built for college students, by a college student 💜</div>
+      <div>© 2025 CodeQuiz</div>
+    </footer>
+  </div><!-- /page-wrap -->
+
+  <script src="app.js"></script>
+</body>
+</html>
