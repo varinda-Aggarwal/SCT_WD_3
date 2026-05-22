@@ -40,9 +40,9 @@ SCT_WD_3/
 [Click here to view](#) <!-- Add after deploying -->
 
 # Screenshots
-![Home Page](assets/screenshot1.png)
-![Topic Selection](assets/screenshot2.png)
-![Dashboard](assets/screenshot3.png)
+!(assets/screenshot1.png)
+!(assets/screenshot2.png)
+!(assets/screenshot3.png)
 ![Select Sub Topic](assets/screenshot4.png)
 ![Quiz Screen](assets/screenshot5.png)
 ![Result Screen](assets/screenshot6.png)
