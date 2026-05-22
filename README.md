@@ -37,7 +37,7 @@ SCT_WD_3/
 └── README.md
 
 # Live Demo
-[Click here to view](#) <!-- Add after deploying -->
+(#) (https://varinda-aggarwal.github.io/SCT_WD_3/)
 
 # Screenshots
 
