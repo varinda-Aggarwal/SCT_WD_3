@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CodeQuiz — Practice. Learn. Ace It.</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Decorative blobs -->
+  <div class="blob-wrap">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <!-- ── NAVBAR ── --> 
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon">⚡</div>
+      <span class="nav-logo-text">Code<span>Quiz</span></span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="topic-select.html">Practice</a></li>
+      <li><a href="#topics">Topics</a></li>
+      <li><a href="#features">Features</a></li>
+    </ul>
+
+    <div class="nav-right">
+      <button class="nav-theme-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+      <div class="nav-avatar" title="Profile">A</div>
+      <a href="dashboard.html" class="nav-cta">Dashboard →</a>
+    </div>
+  </nav>
+
+  <!-- ── PAGE ── -->
+  <div class="page-wrap">
+
+    <!-- ── HERO ── -->
+    <section class="hero">
+      <div class="hero-left">
+       <div class="hero-badge anim-fade-up">
+        <span class="hero-badge-dot"></span>
+          500+ Questions across 5 languages
+      </div>
+
+        <h1 class="hero-title anim-fade-up delay-1">
+        Practice.<br>
+        <span class="highlight">Master coding</span><br>
+        concepts.
+        </h1>
+
+        <p class="hero-sub anim-fade-up delay-2">
+          Topic-wise MCQs, output-based questions, error spotting, and timed mock tests — everything a college student needs in one place.
+        </p>
+
+        <div class="hero-btns anim-fade-up delay-3">
+          <a href="dashboard.html" class="btn btn-primary">Start Practicing →</a>
+          <a href="#topics" class="btn btn-outline">Explore Topics</a>
+        </div>
+
+        <div class="hero-stats anim-fade-up delay-4">
+          <div>
+            <div class="hero-stat-num">500+</div>
+            <div class="hero-stat-label">Questions</div>
+          </div>
+          <div>
+            <div class="hero-stat-num">5</div>
+            <div class="hero-stat-label">Languages</div>
+          </div>
+          <div>
+            <div class="hero-stat-num">10+</div>
+            <div class="hero-stat-label">Topics</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Floating preview cards -->
+      <div class="hero-right anim-scale-in delay-2">
+        <div class="hero-card-main card">
+          <div class="hcm-header">
+            <span class="hcm-title">Output Based</span>
+            <span class="hcm-tag">Python · DSA</span>
+          </div>
+          <div class="hcm-question">What is the output of this code?</div>
+          <div class="hcm-code">
+def mystery(n):<br>
+&nbsp;&nbsp;if n &lt;= 1: return n<br>
+&nbsp;&nbsp;return mystery(n-1) + mystery(n-2)<br>
+print(mystery(6))
+          </div>
+          <div class="hcm-options">
+            <div class="hcm-opt">
+              <span class="opt-ltr">A</span> 6
+            </div>
+            <div class="hcm-opt selected">
+              <span class="opt-ltr">B</span> 8
+            </div>
+            <div class="hcm-opt correct">
+              <span class="opt-ltr">C</span> 8 ✓
+            </div>
+            <div class="hcm-opt">
+              <span class="opt-ltr">D</span> 13
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-card-mini card">
+          <div style="font-size:22px;margin-bottom:8px;">🏆</div>
+          <div class="hcmini-val">92%</div>
+          <div class="hcmini-label">Your best score</div>
+        </div>
+
+        <div class="hero-card-streak card">
+          <div style="font-size:22px;margin-bottom:8px;">🔥</div>
+          <div class="hcmini-val">7 days</div>
+          <div class="hcmini-label">Current streak</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FEATURES ── -->
+    <section class="features-section" id="features">
+      <div class="section-header">
+        <h2 class="section-title anim-fade-up">Everything you need to<br>master CS fundamentals</h2>
+        <p class="section-sub anim-fade-up delay-1">Practice smarter with topic-wise questions, hints, and detailed result reviews.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card card anim-fade-up delay-1">
+  <div class="feature-icon">💡</div>
+  <div class="feature-title">Hints System</div>
+  <div class="feature-desc">Stuck on a question? Use hints to understand the concept without giving away the answer directly.</div>
+</div>
+        <div class="feature-card card anim-fade-up delay-2">
+          <div class="feature-icon">⏱️</div>
+          <div class="feature-title">Test + Practice Mode</div>
+          <div class="feature-desc">Timed tests simulate real interview pressure. Practice mode lets you learn without a clock.</div>
+        </div>
+        <div class="feature-card card anim-fade-up delay-3">
+          <div class="feature-icon">📊</div>
+          <div class="feature-title">Personal Score Tracker</div>
+          <div class="feature-desc">See your improvement over time. Know exactly which topics need more attention.</div>
+        </div>
+        <div class="feature-card card anim-fade-up delay-1">
+          <div class="feature-icon">🏆</div>
+          <div class="feature-title">Leaderboard</div>
+          <div class="feature-desc">Compete with others. See where you stand and push yourself to the top.</div>
+        </div>
+        <div class="feature-card card anim-fade-up delay-2">
+          <div class="feature-icon">🌐</div>
+          <div class="feature-title">Multi-Language Support</div>
+          <div class="feature-desc">Python, C++, Java, JavaScript, C — practice in the language you're most comfortable with.</div>
+        </div>
+        <div class="feature-card card anim-fade-up delay-3">
+          <div class="feature-icon">🌙</div>
+          <div class="feature-title">Dark / Light Mode</div>
+          <div class="feature-desc">Easy on the eyes, day or night. Your preference is saved automatically.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── TOPICS ── -->
+    <section class="topics-section" id="topics">
+      <div class="section-header">
+        <h2 class="section-title anim-fade-up">Pick your topic</h2>
+        <p class="section-sub anim-fade-up delay-1">From DSA to System Design — all core CS subjects covered.</p>
+      </div>
+
+      <div class="topics-grid">
+        <a href="topic-select.html" class="topic-card card anim-fade-up delay-1" style="text-decoration:none">
+          <div class="topic-emoji">🌳</div>
+          <div class="topic-name">DSA</div>
+          <div class="topic-count">120 questions</div>
+        </a>
+        <a href="topic-select.html" class="topic-card card anim-fade-up delay-2" style="text-decoration:none">
+          <div class="topic-emoji">🧩</div>
+          <div class="topic-name">OOPs</div>
+          <div class="topic-count">80 questions</div>
+        </a>
+        <a href="quiz.html?topic=dbms" class="topic-card card anim-fade-up delay-3" style="text-decoration:none">
+          <div class="topic-emoji">🗄️</div>
+          <div class="topic-name">DBMS</div>
+          <div class="topic-count">70 questions</div>
+        </a>
+        <a href="quiz.html?topic=os" class="topic-card card anim-fade-up delay-4" style="text-decoration:none">
+          <div class="topic-emoji">⚙️</div>
+          <div class="topic-name">OS</div>
+          <div class="topic-count">60 questions</div>
+        </a>
+        <a href="quiz.html?topic=cn" class="topic-card card anim-fade-up delay-5" style="text-decoration:none">
+          <div class="topic-emoji">🌐</div>
+          <div class="topic-name">CN</div>
+          <div class="topic-count">55 questions</div>
+        </a>
+        <a href="quiz.html?topic=webdev" class="topic-card card anim-fade-up delay-1" style="text-decoration:none">
+          <div class="topic-emoji">💻</div>
+          <div class="topic-name">Web Dev</div>
+          <div class="topic-count">90 questions</div>
+        </a>
+        <a href="quiz.html?topic=sql" class="topic-card card anim-fade-up delay-2" style="text-decoration:none">
+          <div class="topic-emoji">📋</div>
+          <div class="topic-name">SQL</div>
+          <div class="topic-count">65 questions</div>
+        </a>
+        <a href="quiz.html?topic=aptitude" class="topic-card card anim-fade-up delay-3" style="text-decoration:none">
+          <div class="topic-emoji">🧠</div>
+          <div class="topic-name">Aptitude</div>
+          <div class="topic-count">100 questions</div>
+        </a>
+        <a href="quiz.html?topic=system" class="topic-card card anim-fade-up delay-4" style="text-decoration:none">
+          <div class="topic-emoji">🏗️</div>
+          <div class="topic-name">Sys Design</div>
+          <div class="topic-count">40 questions</div>
+        </a>
+        <a href="quiz.html?topic=devops" class="topic-card card anim-fade-up delay-5" style="text-decoration:none">
+          <div class="topic-emoji">🔧</div>
+          <div class="topic-name">DevOps</div>
+          <div class="topic-count">35 questions</div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ── CTA BANNER ── -->
+    <section class="cta-section">
+      <div class="cta-banner anim-fade-up">
+        <div class="cta-text-wrap">
+          <div class="cta-title">Ready to level up your coding knowledge?</div>
+          <div class="cta-sub">Start practicing topic-wise questions for free.</div>
+        </div>
+        <a href="dashboard.html" class="cta-btn">Start Now →</a>
+      </div>
+    </section>
+
+    <!-- ── FOOTER ── -->
+    <footer class="footer">
+      <div class="footer-logo">⚡ CodeQuiz</div>
+      <div>Built for college students, by a college student 💜</div>
+      <div>© 2025 CodeQuiz</div>
+    </footer>
+
+  </div><!-- /page-wrap -->
+
+  <script src="app.js"></script>
+</body>
+</html>
