@@ -60,7 +60,8 @@ SCT_WD_3/
 ![Dark Mode](assets/Screenshot6.png)
 
 # Author
-Varinda Aggarwal
+*Varinda Aggarwal*
+
 Web Development Intern @SkillCraft Technology
 
 # Connect
