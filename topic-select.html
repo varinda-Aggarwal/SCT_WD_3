@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Select Topic — CodeQuiz</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+
+    .ts-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 36px 80px;
+    }
+
+    /* Breadcrumb */
+    .ts-breadcrumb {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; color: var(--text-muted); margin-bottom: 28px;
+    }
+    .ts-breadcrumb a { color: var(--purple); text-decoration: none; font-weight: 500; }
+    .ts-breadcrumb a:hover { text-decoration: underline; }
+    .ts-breadcrumb-sep { opacity: 0.4; }
+
+    /* Header */
+    .ts-header {
+      margin-bottom: 24px;
+    }
+    .ts-back-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--text-secondary); text-decoration: none;
+      padding: 6px 14px; border-radius: var(--radius-full);
+      background: var(--purple-muted); border: 1px solid var(--card-border);
+      transition: var(--transition); margin-bottom: 14px; cursor: pointer;
+    }
+    .ts-back-btn:hover { color: var(--purple); background: var(--purple-soft); }
+    .ts-title {
+      font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800;
+      color: var(--text-primary); letter-spacing: -0.02em; margin-bottom: 6px;
+    }
+    .ts-title span { color: var(--purple); }
+    .ts-subtitle { font-size: 15px; color: var(--text-secondary); line-height: 1.6; }
+
+    /* Subject switcher — full-width row */
+    .subject-switcher { margin-bottom: 32px; }
+    .subject-switcher-label {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.09em;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px;
+    }
+    .subject-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+    .subject-pill {
+      display: flex; align-items: center; gap: 6px;
+      padding: 8px 18px; border-radius: var(--radius-full);
+      border: 1.5px solid var(--card-border); background: var(--card-bg);
+      backdrop-filter: blur(10px); cursor: pointer;
+      font-size: 13px; font-family: 'DM Sans', sans-serif;
+      color: var(--text-secondary); font-weight: 400;
+      transition: var(--transition);
+    }
+    .subject-pill:hover { border-color: var(--purple-light); color: var(--purple); }
+    .subject-pill.active {
+      background: var(--purple); border-color: var(--purple);
+      color: white; font-weight: 500;
+    }
+
+    /* Step indicator */
+    .ts-steps {
+      display: flex; align-items: center; gap: 0; margin-bottom: 32px;
+    }
+    .ts-step {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 500; color: var(--text-muted);
+      transition: var(--transition);
+    }
+    .ts-step.active { color: var(--purple); }
+    .ts-step.done   { color: var(--success); }
+    .ts-step-num {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--purple-muted); border: 1.5px solid var(--card-border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; transition: var(--transition); flex-shrink: 0;
+    }
+    .ts-step.active .ts-step-num { background: var(--purple); border-color: var(--purple); color: white; }
+    .ts-step.done   .ts-step-num { background: var(--success); border-color: var(--success); color: white; }
+    .ts-step-line {
+      flex: 1; height: 1.5px; background: var(--card-border);
+      margin: 0 12px; max-width: 80px; transition: background 0.3s ease;
+    }
+    .ts-step-line.done { background: var(--success); }
+
+    /* Section */
+    .ts-section { margin-bottom: 32px; }
+    .ts-section-title {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.09em;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px;
+    }
+
+    /* Subtopic grid */
+    .subtopic-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+    }
+    .subtopic-card {
+      padding: 20px 16px; border-radius: var(--radius-md);
+      border: 1.5px solid var(--card-border); background: var(--card-bg);
+      backdrop-filter: blur(14px); cursor: pointer;
+      transition: var(--transition); text-align: left;
+      display: flex; flex-direction: column; gap: 6px;
+      position: relative; overflow: hidden;
+    }
+    .subtopic-card:hover {
+      border-color: var(--purple-light); transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(124,92,252,0.12);
+    }
+    .subtopic-card.selected {
+      border-color: var(--purple); background: var(--purple-soft);
+      box-shadow: 0 0 0 3px rgba(124,92,252,0.12);
+    }
+    body.dark .subtopic-card.selected { background: rgba(124,92,252,0.18); }
+    .subtopic-check {
+      position: absolute; top: 10px; right: 10px;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--purple); display: none;
+      align-items: center; justify-content: center;
+      font-size: 10px; color: white;
+    }
+    .subtopic-card.selected .subtopic-check { display: flex; }
+    .subtopic-emoji { font-size: 24px; margin-bottom: 4px; }
+    .subtopic-name {
+      font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 600;
+      color: var(--text-primary); line-height: 1.3;
+    }
+    .subtopic-count { font-size: 11px; color: var(--text-muted); }
+
+    /* Language row — only shown for DSA & OOPs */
+    .lang-section { margin-bottom: 32px; }
+    .lang-select-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .lang-select-btn {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 22px; border-radius: var(--radius-full);
+      border: 1.5px solid var(--card-border); background: var(--card-bg);
+      backdrop-filter: blur(10px); cursor: pointer;
+      font-size: 14px; font-family: 'DM Sans', sans-serif;
+      color: var(--text-secondary); font-weight: 400; transition: var(--transition);
+    }
+    .lang-select-btn:hover { border-color: var(--purple-light); color: var(--purple); }
+    .lang-select-btn.selected {
+      background: var(--purple); border-color: var(--purple);
+      color: white; font-weight: 500;
+    }
+    .lang-flag { font-size: 16px; }
+
+    /* hidden utility */
+    .ts-hidden { display: none !important; }
+
+    /* Summary */
+    .ts-summary {
+      padding: 18px 24px; border-radius: var(--radius-md);
+      background: var(--purple-soft); border: 1.5px solid rgba(124,92,252,0.25);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; flex-wrap: wrap; margin-bottom: 24px;
+      opacity: 0; pointer-events: none; transform: translateY(8px);
+      transition: all 0.3s ease;
+    }
+    body.dark .ts-summary { background: rgba(124,92,252,0.15); }
+    .ts-summary.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+    .ts-summary-chips { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .ts-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 5px 12px; border-radius: var(--radius-full);
+      background: white; border: 1px solid var(--card-border);
+      font-size: 12px; font-weight: 500; color: var(--purple);
+    }
+    body.dark .ts-chip { background: rgba(255,255,255,0.08); }
+
+    /* CTA */
+    .ts-cta { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .ts-proceed-btn {
+      padding: 14px 36px; border-radius: var(--radius-full);
+      background: var(--purple); color: white;
+      font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 600;
+      border: none; cursor: pointer; transition: var(--transition);
+      display: flex; align-items: center; gap: 8px;
+      opacity: 0.4; pointer-events: none;
+    }
+    .ts-proceed-btn.ready { opacity: 1; pointer-events: auto; }
+    .ts-proceed-btn.ready:hover {
+      background: var(--purple-dark); transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(124,92,252,0.38);
+    }
+    .ts-hint { font-size: 13px; color: var(--text-muted); }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .subtopic-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .ts-wrap { padding: 24px 18px 60px; }
+      .subtopic-grid { grid-template-columns: repeat(3, 1fr); }
+      .ts-title { font-size: 24px; }
+    }
+    @media (max-width: 480px) {
+      .subtopic-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="blob-wrap">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon">⚡</div>
+      <span class="nav-logo-text">Code<span>Quiz</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="quiz.html" class="active">Practice</a></li>
+      <li><a href="index.html#topics">Topics</a></li>
+      <li><a href="index.html#features">Features</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="nav-theme-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+      <div class="nav-avatar" title="Profile">Y</div>
+      <a href="dashboard.html" class="nav-cta">Dashboard →</a>
+    </div>
+  </nav>
+
+  <div class="page-wrap">
+    <div class="ts-wrap">
+
+      <!-- Breadcrumb -->
+      <div class="ts-breadcrumb anim-fade-up">
+        <a href="index.html">Home</a>
+        <span class="ts-breadcrumb-sep">›</span>
+        <a href="index.html#topics">Topics</a>
+        <span class="ts-breadcrumb-sep">›</span>
+        <span id="bcTopic">DSA</span>
+      </div>
+
+      <!-- Header -->
+      <div class="ts-header anim-fade-up delay-1">
+        <a class="ts-back-btn" onclick="history.back()">← Back</a>
+        <div class="ts-title">Practice <span id="pageTopicName">DSA</span></div>
+        <div class="ts-subtitle" id="pageSubtitle">Pick a subtopic and your preferred language — we'll load the right questions.</div>
+      </div>
+
+      <!-- Subject Switcher — full width below header -->
+      <div class="subject-switcher anim-fade-up delay-1">
+        <div class="subject-switcher-label">Switch Subject</div>
+        <div class="subject-pills" id="subjectPills"></div>
+      </div>
+
+      <!-- Step indicator -->
+      <div class="ts-steps anim-fade-up delay-2" id="stepsRow">
+        <div class="ts-step active" id="step1"><div class="ts-step-num">1</div><span>Subtopic</span></div>
+        <div class="ts-step-line" id="line1"></div>
+        <div class="ts-step" id="step2"><div class="ts-step-num">2</div><span>Language</span></div>
+        <div class="ts-step-line" id="line2"></div>
+        <div class="ts-step" id="step3"><div class="ts-step-num">3</div><span>Start</span></div>
+      </div>
+      <!-- Steps for non-lang subjects (only 2 steps) -->
+      <div class="ts-steps anim-fade-up delay-2 ts-hidden" id="stepsRowSimple">
+        <div class="ts-step active" id="step1s"><div class="ts-step-num">1</div><span>Subtopic</span></div>
+        <div class="ts-step-line" id="line1s"></div>
+        <div class="ts-step" id="step2s"><div class="ts-step-num">2</div><span>Start</span></div>
+      </div>
+
+      <!-- STEP 1: Subtopics -->
+      <div class="ts-section anim-fade-up delay-2">
+        <div class="ts-section-title">Choose a Subtopic</div>
+        <div class="subtopic-grid" id="subtopicGrid"></div>
+      </div>
+
+      <!-- STEP 2: Language — only for DSA & OOPs -->
+      <div class="lang-section anim-fade-up delay-3" id="langSection">
+        <div class="ts-section-title">Choose a Language</div>
+        <div class="lang-select-row" id="langRow">
+          <button class="lang-select-btn" onclick="selectLang(this,'Python')"><span class="lang-flag">🐍</span> Python</button>
+          <button class="lang-select-btn" onclick="selectLang(this,'C++')"><span class="lang-flag">⚙️</span> C++</button>
+          <button class="lang-select-btn" onclick="selectLang(this,'Java')"><span class="lang-flag">☕</span> Java</button>
+          <button class="lang-select-btn" onclick="selectLang(this,'JavaScript')"><span class="lang-flag">🟨</span> JavaScript</button>
+          <button class="lang-select-btn" onclick="selectLang(this,'C')"><span class="lang-flag">🔷</span> C</button>
+        </div>
+      </div>
+
+      <!-- Summary -->
+      <div class="ts-summary" id="tsSummary">
+        <div>
+          <div style="font-size:13px; color:var(--text-secondary); margin-bottom:8px"><strong>Ready to start:</strong></div>
+          <div class="ts-summary-chips" id="summaryChips"></div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="ts-cta anim-fade-up delay-4">
+        <button class="ts-proceed-btn" id="proceedBtn" onclick="proceedToQuiz()">Start Quiz →</button>
+        <span class="ts-hint" id="ctaHint">Select a subtopic to continue</span>
+      </div>
+
+    </div>
+
+    <footer class="footer">
+      <div class="footer-logo">⚡ CodeQuiz</div>
+      <div>Built for college students, by a college student 💜</div>
+      <div>© 2025 CodeQuiz</div>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+
+    // Subjects that require language selection
+    const LANG_REQUIRED = ['dsa', 'oops'];
+
+    const TOPIC_DATA = {
+      dsa: {
+        name: 'DSA', emoji: '🌳',
+        subtitle: 'Pick a subtopic and your preferred language — we\'ll load the right questions.',
+        subtopics: [
+          { emoji: '📦', name: 'Arrays',            slug: 'arrays',        count: 25 },
+          { emoji: '🔤', name: 'Strings',            slug: 'strings',       count: 20 },
+          { emoji: '🔗', name: 'Linked List',        slug: 'linked-list',   count: 18 },
+          { emoji: '📚', name: 'Stacks & Queues',    slug: 'stacks-queues', count: 15 },
+          { emoji: '🌳', name: 'Trees',              slug: 'trees',         count: 22 },
+          { emoji: '🕸️', name: 'Graphs',             slug: 'graphs',        count: 16 },
+          { emoji: '🔁', name: 'Recursion',          slug: 'recursion',     count: 14 },
+          { emoji: '👆', name: 'Two Pointers',       slug: 'two-pointers',  count: 12 },
+          { emoji: '🔍', name: 'Binary Search',      slug: 'binary-search', count: 10 },
+          { emoji: '📊', name: 'Sorting',            slug: 'sorting',       count: 13 },
+          { emoji: '💡', name: 'Dynamic Prog.',      slug: 'dp',            count: 18 },
+          { emoji: '#️⃣', name: 'Hashing',            slug: 'hashing',       count: 11 },
+          { emoji: '🪟', name: 'Sliding Window',     slug: 'sliding-window',count: 10 },
+          { emoji: '🔢', name: 'Bit Manipulation',   slug: 'bit-manip',     count: 9  },
+          { emoji: '⛺', name: 'Heaps / Priority Q', slug: 'heaps',         count: 11 },
+        ]
+      },
+      oops: {
+        name: 'OOPs', emoji: '🧩',
+        subtitle: 'Pick a subtopic and your preferred language — we\'ll load the right questions.',
+        subtopics: [
+          { emoji: '🧱', name: 'Classes & Objects',  slug: 'classes',         count: 20 },
+          { emoji: '🧬', name: 'Inheritance',        slug: 'inheritance',     count: 18 },
+          { emoji: '🔀', name: 'Polymorphism',       slug: 'polymorphism',    count: 16 },
+          { emoji: '🔒', name: 'Encapsulation',      slug: 'encapsulation',   count: 12 },
+          { emoji: '🎭', name: 'Abstraction',        slug: 'abstraction',     count: 14 },
+          { emoji: '🏗️', name: 'Constructors',       slug: 'constructors',    count: 12 },
+          { emoji: '🔌', name: 'Interfaces',         slug: 'interfaces',      count: 10 },
+          { emoji: '📐', name: 'Design Patterns',    slug: 'design-patterns', count: 14 },
+          { emoji: '🔃', name: 'Overloading',        slug: 'overloading',     count: 11 },
+          { emoji: '🧵', name: 'Exception Handling', slug: 'exceptions',      count: 13 },
+        ]
+      },
+      dbms: {
+        name: 'DBMS', emoji: '🗄️',
+        subtitle: 'Pick a subtopic to start practising DBMS concepts.',
+        subtopics: [
+          { emoji: '📋', name: 'Normalization',      slug: 'normalization',   count: 20 },
+          { emoji: '🔑', name: 'Keys & Indexes',     slug: 'keys',            count: 15 },
+          { emoji: '🔄', name: 'Transactions',       slug: 'transactions',    count: 16 },
+          { emoji: '📊', name: 'ER Model',           slug: 'er-model',        count: 12 },
+          { emoji: '🗂️', name: 'SQL Queries',        slug: 'sql-queries',     count: 20 },
+          { emoji: '🔒', name: 'Concurrency',        slug: 'concurrency',     count: 13 },
+          { emoji: '💾', name: 'Storage & Files',    slug: 'storage',         count: 10 },
+          { emoji: '📉', name: 'Query Optim.',       slug: 'query-opt',       count: 11 },
+          { emoji: '🏛️', name: 'Relational Algebra', slug: 'rel-algebra',     count: 12 },
+        ]
+      },
+      os: {
+        name: 'OS', emoji: '⚙️',
+        subtitle: 'Pick a subtopic to start practising Operating Systems concepts.',
+        subtopics: [
+          { emoji: '⚙️', name: 'Processes',          slug: 'processes',       count: 15 },
+          { emoji: '🧵', name: 'Threads',             slug: 'threads',         count: 12 },
+          { emoji: '🔒', name: 'Deadlocks',           slug: 'deadlocks',       count: 14 },
+          { emoji: '📦', name: 'Memory Mgmt.',        slug: 'memory',          count: 16 },
+          { emoji: '🗄️', name: 'File Systems',        slug: 'file-systems',    count: 11 },
+          { emoji: '📅', name: 'CPU Scheduling',      slug: 'scheduling',      count: 15 },
+          { emoji: '🔄', name: 'Synchronization',     slug: 'sync',            count: 13 },
+          { emoji: '📟', name: 'I/O Management',      slug: 'io',              count: 10 },
+          { emoji: '🗃️', name: 'Virtual Memory',      slug: 'virtual-mem',     count: 12 },
+        ]
+      },
+      cn: {
+        name: 'CN', emoji: '🌐',
+        subtitle: 'Pick a subtopic to start practising Computer Networks.',
+        subtopics: [
+          { emoji: '🔗', name: 'OSI Model',          slug: 'osi',             count: 14 },
+          { emoji: '📡', name: 'TCP/IP',             slug: 'tcp-ip',          count: 16 },
+          { emoji: '🌐', name: 'IP Addressing',      slug: 'ip',              count: 12 },
+          { emoji: '🔒', name: 'Network Security',   slug: 'security',        count: 13 },
+          { emoji: '📶', name: 'Routing',            slug: 'routing',         count: 11 },
+          { emoji: '🔀', name: 'Switching',          slug: 'switching',       count: 10 },
+          { emoji: '📧', name: 'Application Layer',  slug: 'app-layer',       count: 12 },
+          { emoji: '🛡️', name: 'Firewalls & DNS',    slug: 'firewall-dns',    count: 9  },
+        ]
+      },
+      webdev: {
+        name: 'Web Dev', emoji: '💻',
+        subtitle: 'Pick a subtopic to start practising Web Development.',
+        subtopics: [
+          { emoji: '🏗️', name: 'HTML Basics',         slug: 'html',           count: 18 },
+          { emoji: '🎨', name: 'CSS & Flexbox',       slug: 'css',            count: 20 },
+          { emoji: '⚡', name: 'JavaScript Core',     slug: 'js-core',        count: 22 },
+          { emoji: '🌀', name: 'Async JS',            slug: 'async-js',       count: 14 },
+          { emoji: '⚛️', name: 'React Basics',        slug: 'react',          count: 16 },
+          { emoji: '🌍', name: 'REST APIs',           slug: 'rest',           count: 12 },
+          { emoji: '🗄️', name: 'Node.js',             slug: 'nodejs',         count: 14 },
+          { emoji: '🔒', name: 'Web Security',        slug: 'web-security',   count: 10 },
+          { emoji: '📦', name: 'Git & Version Ctrl',  slug: 'git',            count: 11 },
+        ]
+      },
+      sql: {
+        name: 'SQL', emoji: '📋',
+        subtitle: 'Pick a subtopic to start practising SQL.',
+        subtopics: [
+          { emoji: '🔍', name: 'SELECT Queries',      slug: 'select',         count: 18 },
+          { emoji: '🔗', name: 'JOINs',               slug: 'joins',          count: 16 },
+          { emoji: '🧮', name: 'Aggregate Fns',       slug: 'aggregates',     count: 13 },
+          { emoji: '📂', name: 'Subqueries',          slug: 'subqueries',     count: 12 },
+          { emoji: '🗂️', name: 'Indexes',             slug: 'indexes',        count: 10 },
+          { emoji: '🔄', name: 'Transactions',        slug: 'sql-txn',        count: 11 },
+          { emoji: '📋', name: 'DDL & DML',           slug: 'ddl-dml',        count: 14 },
+        ]
+      },
+      aptitude: {
+        name: 'Aptitude', emoji: '🧠',
+        subtitle: 'Pick a subtopic to practise Aptitude questions.',
+        subtopics: [
+          { emoji: '🔢', name: 'Number System',       slug: 'number-sys',     count: 18 },
+          { emoji: '📐', name: 'Geometry',            slug: 'geometry',       count: 14 },
+          { emoji: '⚡', name: 'Speed & Distance',    slug: 'speed-dist',     count: 15 },
+          { emoji: '🪙', name: 'Profit & Loss',       slug: 'profit-loss',    count: 14 },
+          { emoji: '⏰', name: 'Time & Work',         slug: 'time-work',      count: 13 },
+          { emoji: '🎲', name: 'Probability',         slug: 'probability',    count: 12 },
+          { emoji: '🔤', name: 'Logical Reasoning',   slug: 'logical',        count: 16 },
+          { emoji: '📊', name: 'Data Interpretation', slug: 'di',             count: 14 },
+        ]
+      },
+      system: {
+        name: 'Sys Design', emoji: '🏗️',
+        subtitle: 'Pick a subtopic to practise System Design concepts.',
+        subtopics: [
+          { emoji: '🔄', name: 'Load Balancing',      slug: 'load-balance',   count: 8 },
+          { emoji: '💾', name: 'Caching',             slug: 'caching',        count: 9 },
+          { emoji: '📡', name: 'CAP Theorem',         slug: 'cap',            count: 7 },
+          { emoji: '🗄️', name: 'Databases (HLD)',     slug: 'db-hld',         count: 8 },
+          { emoji: '📨', name: 'Message Queues',      slug: 'msg-queues',     count: 8 },
+          { emoji: '🌐', name: 'Microservices',       slug: 'microservices',  count: 10 },
+        ]
+      },
+      devops: {
+        name: 'DevOps', emoji: '🔧',
+        subtitle: 'Pick a subtopic to practise DevOps concepts.',
+        subtopics: [
+          { emoji: '🐳', name: 'Docker',              slug: 'docker',         count: 10 },
+          { emoji: '☸️', name: 'Kubernetes',          slug: 'k8s',            count: 8  },
+          { emoji: '🔁', name: 'CI/CD',               slug: 'cicd',           count: 9  },
+          { emoji: '📦', name: 'Linux Basics',        slug: 'linux',          count: 12 },
+          { emoji: '☁️', name: 'Cloud Concepts',      slug: 'cloud',          count: 11 },
+        ]
+      }
+    };
+
+    let selectedTopicSlug = 'dsa';
+    let selectedTopic     = null;
+    let selectedSubtopic  = null;
+    let selectedLang      = null;
+    let needsLang         = true;
+
+    function init() {
+      initTheme();
+      const params = new URLSearchParams(window.location.search);
+      selectedTopicSlug = (params.get('topic') || 'dsa').toLowerCase();
+      loadTopic(selectedTopicSlug);
+    }
+
+    function loadTopic(slug) {
+      selectedTopicSlug = slug;
+      selectedSubtopic  = null;
+      selectedLang      = null;
+      needsLang         = LANG_REQUIRED.includes(slug);
+
+      const topicData = TOPIC_DATA[slug] || TOPIC_DATA['dsa'];
+      selectedTopic   = topicData;
+
+      // Update titles
+      document.getElementById('pageTopicName').textContent = topicData.name;
+      document.getElementById('bcTopic').textContent       = topicData.name;
+      document.getElementById('pageSubtitle').textContent  = topicData.subtitle;
+      document.title = `${topicData.name} — CodeQuiz`;
+
+      // Show/hide language section & correct steps row
+      const langSection   = document.getElementById('langSection');
+      const stepsRow      = document.getElementById('stepsRow');
+      const stepsRowSimple= document.getElementById('stepsRowSimple');
+
+      if (needsLang) {
+        langSection.classList.remove('ts-hidden');
+        stepsRow.classList.remove('ts-hidden');
+        stepsRowSimple.classList.add('ts-hidden');
+      } else {
+        langSection.classList.add('ts-hidden');
+        stepsRow.classList.add('ts-hidden');
+        stepsRowSimple.classList.remove('ts-hidden');
+      }
+
+      renderSubtopics(topicData.subtopics);
+      renderSubjectPills();
+      resetAll();
+    }
+
+    function renderSubjectPills() {
+      const container = document.getElementById('subjectPills');
+      container.innerHTML = Object.entries(TOPIC_DATA).map(([slug, data]) => `
+        <button class="subject-pill ${slug === selectedTopicSlug ? 'active' : ''}"
+          onclick="switchSubject('${slug}')">
+          ${data.emoji} ${data.name}
+        </button>
+      `).join('');
+    }
+
+    function switchSubject(slug) {
+      if (slug === selectedTopicSlug) return;
+      loadTopic(slug);
+    }
+
+    function renderSubtopics(subtopics) {
+      const grid = document.getElementById('subtopicGrid');
+      grid.innerHTML = subtopics.map(s => `
+        <div class="subtopic-card" onclick="selectSubtopic(this,'${s.slug}','${s.name}')">
+          <div class="subtopic-check">✓</div>
+          <div class="subtopic-emoji">${s.emoji}</div>
+          <div class="subtopic-name">${s.name}</div>
+          <div class="subtopic-count">${s.count} questions</div>
+        </div>
+      `).join('');
+    }
+
+    function selectSubtopic(el, slug, name) {
+      document.querySelectorAll('.subtopic-card').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedSubtopic = { slug, name };
+      updateUI();
+    }
+
+    function selectLang(el, lang) {
+      document.querySelectorAll('.lang-select-btn').forEach(b => b.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedLang = lang;
+      updateUI();
+    }
+
+    function resetAll() {
+      // Steps (3-step)
+      document.getElementById('step1').className = 'ts-step active';
+      document.getElementById('step2').className = 'ts-step';
+      document.getElementById('step3').className = 'ts-step';
+      document.getElementById('line1').classList.remove('done');
+      document.getElementById('line2').classList.remove('done');
+      // Steps (2-step)
+      document.getElementById('step1s').className = 'ts-step active';
+      document.getElementById('step2s').className = 'ts-step';
+      document.getElementById('line1s').classList.remove('done');
+      // Summary & CTA
+      document.getElementById('tsSummary').classList.remove('show');
+      document.getElementById('proceedBtn').classList.remove('ready');
+      document.getElementById('ctaHint').textContent = 'Select a subtopic to continue';
+      // Lang buttons
+      document.querySelectorAll('.lang-select-btn').forEach(b => b.classList.remove('selected'));
+    }
+
+    function updateUI() {
+      // ── Steps ──
+      if (needsLang) {
+        // 3-step flow
+        if (selectedSubtopic) {
+          document.getElementById('step1').className = 'ts-step done';
+          document.getElementById('line1').classList.add('done');
+          document.getElementById('step2').className = 'ts-step active';
+        }
+        if (selectedSubtopic && selectedLang) {
+          document.getElementById('step2').className = 'ts-step done';
+          document.getElementById('line2').classList.add('done');
+          document.getElementById('step3').className = 'ts-step active';
+        }
+      } else {
+        // 2-step flow
+        if (selectedSubtopic) {
+          document.getElementById('step1s').className = 'ts-step done';
+          document.getElementById('line1s').classList.add('done');
+          document.getElementById('step2s').className = 'ts-step active';
+        }
+      }
+
+      // ── Summary chips ──
+      const chips = [];
+      if (selectedTopic)    chips.push(`${selectedTopic.emoji} ${selectedTopic.name}`);
+      if (selectedSubtopic) chips.push(`📌 ${selectedSubtopic.name}`);
+      if (selectedLang)     chips.push(`💻 ${selectedLang}`);
+
+      const summary = document.getElementById('tsSummary');
+      if (chips.length > 0) {
+        document.getElementById('summaryChips').innerHTML =
+          chips.map(c => `<span class="ts-chip">${c}</span>`).join('');
+        summary.classList.add('show');
+      } else {
+        summary.classList.remove('show');
+      }
+
+      // ── CTA ──
+      const btn  = document.getElementById('proceedBtn');
+      const hint = document.getElementById('ctaHint');
+      const ready = needsLang
+        ? (selectedSubtopic && selectedLang)
+        : !!selectedSubtopic;
+
+      if (ready) {
+        btn.classList.add('ready');
+        hint.textContent = needsLang
+          ? `${selectedSubtopic.name} · ${selectedLang} — let's go! 🚀`
+          : `${selectedSubtopic.name} — let's go! 🚀`;
+      } else {
+        btn.classList.remove('ready');
+        hint.textContent = selectedSubtopic
+          ? 'Now pick a language to continue'
+          : 'Select a subtopic to continue';
+      }
+    }
+
+    function proceedToQuiz() {
+      if (!selectedSubtopic) return;
+      if (needsLang && !selectedLang) return;
+
+      localStorage.setItem('cq_topic',    selectedSubtopic.name);
+      localStorage.setItem('cq_subtopic', selectedSubtopic.slug);
+      if (needsLang) localStorage.setItem('cq_lang', selectedLang);
+
+      const params = new URLSearchParams({
+        topic:    selectedTopicSlug,
+        subtopic: selectedSubtopic.slug,
+        ...(needsLang && { lang: selectedLang })
+      });
+      window.location.href = `quiz.html?${params.toString()}`;
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
