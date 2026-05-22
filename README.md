@@ -37,7 +37,7 @@ SCT_WD_3/
 └── README.md
 
 # Live Demo
-(#) (https://varinda-aggarwal.github.io/SCT_WD_3/)
+![CodeQuiz](#) (https://varinda-aggarwal.github.io/SCT_WD_3/)
 
 # Screenshots
 
